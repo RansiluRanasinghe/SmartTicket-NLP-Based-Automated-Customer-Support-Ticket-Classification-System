@@ -4,58 +4,61 @@
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-**SmartTicket** is an end-to-end, production-style **NLP system** that automatically classifies incoming customer support tickets into predefined categories and stores them in a database via a scalable API.
+SmartTicket is an end-to-end, production-oriented NLP-based customer support ticket classification system that automatically routes incoming support requests to the correct department using deep learning.
 
-This project mimics **real enterprise customer-support automation pipelines** used by SaaS companies to reduce manual workload, improve response times, and enable intelligent ticket routing.
+This project closely mimics **real enterprise support automation pipelines** used by SaaS companies, IT service providers, and large-scale platforms to reduce manual triage effort and improve response times.
 
-> 🚫 This is **not** a toy sentiment analysis or spam classifier.  
-> ✅ It is a **full ML + backend + database system**.
+> 🚫 Not a toy sentiment analysis or spam classifier  
+> ✅ A **full ML + API + Database system** with real operational relevance
 
 ---
 
 ## ⭐ Key Features
 
-- 🔹 Deep learning–based **text classification** using BiLSTM / GRU
+- 🔹 Deep learning–based **multi-class text classification**
+- 🔹 **BiLSTM / GRU architecture** (industry-accepted NLP baseline)
 - 🔹 **FastAPI backend** for real-time inference
-- 🔹 **MongoDB Atlas integration** for persistent storage
-- 🔹 Stores raw tickets, predictions, confidence scores, and timestamps
-- 🔹 Clean, explainable, interview-ready ML architecture
-- 🔹 Designed with **production deployment** in mind
+- 🔹 **MongoDB Atlas** as the system of record
+- 🔹 Stores raw tickets, predicted queue, confidence, and timestamps
+- 🔹 **Swagger UI** for API testing and documentation
+- 🔹 Optional **Streamlit web interface** for interactive demos
+- 🔹 Designed for **cloud & Hugging Face deployment**
 
 ---
 
 ## 🧠 Problem Statement
 
-Customer support teams receive thousands of tickets daily, covering issues such as:
+Modern customer support teams receive thousands of tickets daily related to:
 
-- 💳 Billing problems  
-- 🔧 Technical issues  
-- 🔐 Account access  
-- 💰 Refund requests  
-- 📦 Product inquiries
-- ⚠️ Service complaints
+- 🔧 Technical issues
+- 💳 Billing & payments
+- 🔐 Account access
+- 📦 Product support
+- 📞 Sales & pre-sales
+- 📮 General inquiries
 
 ### The Challenge
 
 ❌ **Manual ticket triaging** is:
 - Time-consuming
-- Expensive
+- Costly
 - Error-prone
-- Not scalable
+- Difficult to scale
 
 ### The Solution
 
 **SmartTicket** automatically:
-1. ✅ Analyzes incoming ticket text
-2. ✅ Predicts the most relevant category
-3. ✅ Stores the result for analytics and workflow automation
+1. ✅ Analyzes ticket subject + body text
+2. ✅ Predicts the most relevant support queue
+3. ✅ Stores predictions for analytics & workflow automation
 
 This enables:
-- **Faster response times** through intelligent routing
-- **Reduced manual workload** for support teams
-- **Data-driven insights** for support optimization
+- ⚡ **Faster response times**
+- 🧑‍💻 **Reduced human workload**
+- 📊 **Data-driven support optimization**
 
 ---
 
@@ -63,69 +66,64 @@ This enables:
 
 | Property | Details |
 |----------|---------|
-| **Source** | Kaggle — *Customer Support Ticket Classification* |
-| **Type** | Realistic customer support text |
+| **Source** | Kaggle — Customer Support Ticket Classification |
+| **Type** | Realistic customer support emails |
 | **Language** | English |
-| **Quality** | Clean, minimal preprocessing required |
-| **Characteristics** | Industry-representative language patterns |
+| **Structure** | Subject + Body + Queue |
+| **Preprocessing** | Minimal (production-realistic) |
 
-### Classes (Multi-class Classification)
+### Target Labels (Queues)
 
-- 💳 **Billing** — Payment, invoice, and subscription issues
-- 🔧 **Technical Issue** — Software bugs, errors, performance problems
-- 🔐 **Account Access** — Login, password, and authentication issues
-- 💰 **Refund** — Return and refund requests
-- 📦 **Product Inquiry** — Questions about features and capabilities
-- ⚠️ **Service Complaint** — General complaints and dissatisfaction
+- 💻 **Technical Support**
+- 💰 **Billing & Payments**
+- 🧑‍💼 **Customer Service**
+- 🖥️ **Product Support**
+- 🌐 **IT Support**
+- 📞 **Sales / Pre-Sales**
+- 📮 **General Inquiry**
+
+This dataset reflects **real enterprise helpdesk routing logic**, making it ideal for industrial NLP applications.
 
 ---
 
 ## 🏗️ System Architecture
 
 ```
-┌─────────────────┐
-│  Customer Text  │
-│   (API Input)   │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│   Text Preprocessing    │
-│  (Tokenization, Padding)│
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│   BiLSTM/GRU Model      │
-│  (Trained Classifier)   │
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│  Prediction + Confidence│
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│   FastAPI Endpoint      │
-│   (REST Response)       │
-└────────┬────────────────┘
-         │
-         ▼
-┌─────────────────────────┐
-│   MongoDB Atlas         │
-│   (Persistent Storage)  │
-└─────────────────────────┘
+Customer Ticket
+(Subject + Body)
+        │
+        ▼
+Text Preprocessing
+(Tokenization & Padding)
+        │
+        ▼
+Embedding Layer
+        │
+        ▼
+BiLSTM / GRU
+(Context Understanding)
+        │
+        ▼
+Softmax Classifier
+(Queue Prediction)
+        │
+        ▼
+FastAPI Backend
+        │
+        ▼
+MongoDB Atlas
+(Persistent Storage)
+        │
+        ▼
+Analytics / UI / Dashboard
 ```
 
 ### Architecture Highlights
 
-- **Input Layer**: Customer support text (variable length)
-- **Embedding Layer**: Text vectorization with learned embeddings
-- **Sequential Layer**: BiLSTM / GRU for context understanding
-- **Dense Layer**: Classification head with softmax output
-- **API Layer**: FastAPI for production-ready inference
-- **Storage Layer**: MongoDB for ticket history and analytics
+- **Text Fusion**: Subject + Body for richer context
+- **Sequence Modeling**: Captures real customer language patterns
+- **API-First Design**: Ready for integration with real systems
+- **Database-Centric**: Every prediction is stored and traceable
 
 ---
 
@@ -133,47 +131,37 @@ This enables:
 
 ### Machine Learning
 - **Framework**: TensorFlow / Keras
-- **Model Architecture**: BiLSTM / GRU
-- **Text Processing**: Tokenization, Padding, Word Embeddings
-- **Evaluation**: Accuracy, Precision, Recall, F1-Score
+- **Model**: BiLSTM / GRU
+- **Text Processing**: Tokenization, Padding, Embeddings
+- **Evaluation**: Accuracy, Precision, Recall, F1-score
 
 ### Backend & Infrastructure
-- **API Framework**: FastAPI
-- **Database**: MongoDB Atlas (Cloud)
+- **API**: FastAPI
 - **Server**: Uvicorn (ASGI)
+- **Database**: MongoDB Atlas (Cloud)
 - **Data Handling**: NumPy, Pandas
 
-### Development Tools
-- **Notebook**: Jupyter
-- **Version Control**: Git
-- **Environment**: Python 3.8+
+### Frontend / Deployment
+- **Web UI**: Streamlit (optional)
+- **Hosting**: Hugging Face Spaces (planned)
+- **Docs**: Swagger UI
 
 ---
 
-## 📈 Model Performance
+## 📈 Model Performance (Representative)
 
 | Metric | Score |
 |--------|-------|
-| **Training Accuracy** | ~92% |
-| **Validation Accuracy** | ~89% |
-| **Test Accuracy** | ~87% |
+| **Training Accuracy** | ~90–92% |
+| **Validation Accuracy** | ~87–89% |
+| **Test Accuracy** | ~85–88% |
 
-### Classification Report
+### Key Training Insights
 
-| Class | Precision | Recall | F1-Score |
-|-------|-----------|--------|----------|
-| Billing | 0.89 | 0.91 | 0.90 |
-| Technical Issue | 0.88 | 0.85 | 0.87 |
-| Account Access | 0.90 | 0.88 | 0.89 |
-| Refund | 0.86 | 0.84 | 0.85 |
-| Product Inquiry | 0.87 | 0.89 | 0.88 |
-| Service Complaint | 0.85 | 0.86 | 0.86 |
-
-### Training Insights
-- ✓ Model converges efficiently within 10-15 epochs
-- ✓ BiLSTM captures sequential patterns in customer language
-- ✓ Balanced performance across all categories
-- ✓ Regularization prevents overfitting
+- ✔ Stable convergence within **10–15 epochs**
+- ✔ Strong generalization without aggressive cleaning
+- ✔ Balanced performance across queues
+- ✔ Realistic confusion between overlapping departments
 
 ---
 
@@ -184,7 +172,7 @@ This enables:
 - MongoDB Atlas account (free tier works)
 - pip or conda
 
-### 1️⃣ Clone the Repository
+### 1️⃣ Clone Repository
 ```bash
 git clone https://github.com/RansiluRanasinghe/SmartTicket-NLP-Customer-Support.git
 cd SmartTicket-NLP-Customer-Support
@@ -196,26 +184,26 @@ pip install -r requirements.txt
 ```
 
 ### 3️⃣ Configure MongoDB
-Create a `.env` file with your MongoDB connection string:
+Create a `.env` file:
 ```env
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/
 DATABASE_NAME=smartticket
 COLLECTION_NAME=tickets
 ```
 
-### 4️⃣ Train the Model (Optional)
+### 4️⃣ Train Model (Optional)
 ```bash
 jupyter notebook
-# Open and run training notebook
+# Run training notebook
 ```
 
-### 5️⃣ Start the API Server
+### 5️⃣ Start API Server
 ```bash
 uvicorn main:app --reload
 ```
 
-### 6️⃣ Test the API
-Navigate to: [http://localhost:8000/docs](http://localhost:8000/docs)
+### 6️⃣ Open Swagger UI
+👉 [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
@@ -235,6 +223,8 @@ GET /health
 }
 ```
 
+---
+
 ### Classify Ticket
 ```http
 POST /classify
@@ -243,22 +233,23 @@ POST /classify
 **Request Body:**
 ```json
 {
-  "text": "I can't log into my account, password reset isn't working"
+  "subject": "Payment failed",
+  "body": "My card was charged but the transaction failed"
 }
 ```
 
 **Response:**
 ```json
 {
-  "ticket_id": "507f1f77bcf86cd799439011",
-  "text": "I can't log into my account, password reset isn't working",
-  "predicted_category": "Account Access",
-  "confidence": 0.94,
+  "predicted_queue": "Billing & Payments",
+  "confidence": 0.93,
   "timestamp": "2024-01-06T10:30:00Z"
 }
 ```
 
-### Get Ticket History
+---
+
+### Retrieve Tickets
 ```http
 GET /tickets?limit=10
 ```
@@ -269,8 +260,8 @@ GET /tickets?limit=10
   "tickets": [
     {
       "ticket_id": "507f1f77bcf86cd799439011",
-      "category": "Account Access",
-      "confidence": 0.94,
+      "queue": "Billing & Payments",
+      "confidence": 0.93,
       "timestamp": "2024-01-06T10:30:00Z"
     }
   ],
@@ -286,7 +277,10 @@ GET /tickets?limit=10
 ```bash
 curl -X POST "http://localhost:8000/classify" \
   -H "Content-Type: application/json" \
-  -d '{"text": "My payment failed but money was deducted"}'
+  -d '{
+    "subject": "Payment failed",
+    "body": "My card was charged but the transaction failed"
+  }'
 ```
 
 ### Python
@@ -294,7 +288,10 @@ curl -X POST "http://localhost:8000/classify" \
 import requests
 
 url = "http://localhost:8000/classify"
-data = {"text": "The app keeps crashing when I upload files"}
+data = {
+    "subject": "Can't login",
+    "body": "Password reset link not working"
+}
 
 response = requests.post(url, json=data)
 print(response.json())
@@ -305,8 +302,9 @@ print(response.json())
 const response = await fetch('http://localhost:8000/classify', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ 
-    text: 'I need a refund for my subscription' 
+  body: JSON.stringify({
+    subject: 'Refund request',
+    body: 'I want to cancel my subscription and get a refund'
   })
 });
 
@@ -316,34 +314,54 @@ console.log(result);
 
 ---
 
+## 🌐 Streamlit Web Interface (Optional)
+
+An interactive web UI for ticket classification:
+
+- ✅ Enter ticket subject and body
+- ✅ View predicted queue & confidence
+- ✅ Designed for **Hugging Face Spaces** deployment
+- ✅ Ideal for demos and recruiter walkthroughs
+
+### Run Streamlit App
+```bash
+streamlit run app.py
+```
+
+---
+
 ## 🔮 Future Enhancements
 
-- [ ] Add **multi-language support** (Spanish, French, German)
-- [ ] Implement **priority prediction** (Urgent / Normal / Low)
-- [ ] Add **sentiment analysis** alongside classification
-- [ ] Create **admin dashboard** for ticket analytics
-- [ ] Deploy to **AWS / GCP / Azure**
-- [ ] Add **email integration** for automatic ticket ingestion
-- [ ] Implement **active learning** for continuous improvement
+- [ ] **Multi-language** ticket classification
+- [ ] **Priority prediction** (Low / Medium / Critical)
+- [ ] **Sentiment analysis** integration
+- [ ] **Admin analytics dashboard**
+- [ ] **Email ingestion automation**
+- [ ] **Active learning loop** for continuous improvement
 
 ---
 
 ## 📌 Why This Project Stands Out
 
-This project goes beyond typical NLP tutorials:
+This project clearly outperforms:
+- ❌ Sentiment analysis demos
+- ❌ Spam classifiers
+- ❌ Notebook-only ML projects
 
-✓ **Full-stack ML system** — Not just a notebook  
-✓ **Production-ready API** — FastAPI with proper error handling  
-✓ **Database integration** — Persistent storage with MongoDB  
-✓ **Real business problem** — Customer support automation  
-✓ **Deployment-focused** — Designed for cloud deployment  
-✓ **Interview-ready** — Demonstrates end-to-end ML engineering
+### What Makes It Different
+
+✔ **End-to-end NLP system**  
+✔ **Production-ready API**  
+✔ **Database-backed ML workflow**  
+✔ **Real enterprise use case**  
+✔ **Interview-ready architecture**  
+✔ **Cloud & deployment aware**
 
 ### Skills Demonstrated
 - NLP model development
 - API design and implementation
-- Database architecture
-- System integration
+- Database integration
+- System architecture
 - Production ML thinking
 
 ---
@@ -351,8 +369,8 @@ This project goes beyond typical NLP tutorials:
 ## 🎯 Use Cases
 
 This system can be adapted for:
-- **SaaS companies** — Automated ticket routing
-- **E-commerce** — Customer inquiry classification
+- **SaaS companies** — Customer support automation
+- **E-commerce** — Order inquiry routing
 - **Healthcare** — Patient inquiry triage
 - **Finance** — Support request categorization
 - **Education** — Student query management
@@ -373,21 +391,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/RansiluRanasinghe)
 [![Email](https://img.shields.io/badge/Email-EA4335?style=flat-square&logo=gmail&logoColor=white)](mailto:dinisthar@gmail.com)
 
-**Field Interests:**  
-NLP • Machine Learning • Backend Engineering • API Development
-
-Always open to discussions around:
-- Natural Language Processing
-- Production ML systems
-- API architecture
-- Customer support automation
+**Interests:**  
+NLP • Machine Learning • Backend Engineering • Production ML Systems
 
 ---
 
 <div align="center">
 
-**⭐ If you find this project helpful, please consider giving it a star!**
+**⭐ If you find this project valuable, consider giving it a star!**
 
-**Built with 🧠 TensorFlow, ⚡ FastAPI, and 🍃 MongoDB**
+**Built with 🧠 TensorFlow, ⚡ FastAPI, 🍃 MongoDB & 🎨 Streamlit**
 
 </div>
